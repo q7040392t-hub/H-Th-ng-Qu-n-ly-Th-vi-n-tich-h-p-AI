@@ -24,15 +24,36 @@ except ImportError:
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / '.env')
 
-DB_ENGINE = os.getenv('DB_ENGINE', 'mysql').strip().lower()
+# Đọc cấu hình theo thứ tự:
+# 1) Biến môi trường / file .env khi chạy local
+# 2) Streamlit Secrets khi deploy trên Streamlit Cloud
+# 3) Giá trị mặc định
+def _config(name, default=''):
+    value = os.getenv(name)
+    if value is not None and str(value).strip() != '':
+        return str(value)
+
+    try:
+        import streamlit as st
+        if name in st.secrets:
+            return str(st.secrets[name])
+    except Exception:
+        pass
+
+    return str(default)
+
+
+# Streamlit Cloud mặc định dùng SQLite để không cố kết nối MySQL localhost.
+# Khi chạy local, chỉ cần DB_ENGINE=mysql trong .env là vẫn dùng MySQL như cũ.
+DB_ENGINE = _config('DB_ENGINE', 'sqlite').strip().lower()
 DB_PATH = BASE_DIR / 'library.db'
 SEED_BOOKS = BASE_DIR / 'books_seed.json'
 
-MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
-MYSQL_PORT = int(os.getenv('MYSQL_PORT', '3306'))
-MYSQL_USER = os.getenv('MYSQL_USER', 'root')
-MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
-MYSQL_DATABASE = os.getenv('MYSQL_DATABASE', 'smartlibrary')
+MYSQL_HOST = _config('MYSQL_HOST', '127.0.0.1')
+MYSQL_PORT = int(_config('MYSQL_PORT', '3306'))
+MYSQL_USER = _config('MYSQL_USER', 'root')
+MYSQL_PASSWORD = _config('MYSQL_PASSWORD', '')
+MYSQL_DATABASE = _config('MYSQL_DATABASE', 'smartlibrary')
 
 INTEGRITY_ERRORS = (sqlite3.IntegrityError, MySQLIntegrityError)
 _MYSQL_POOL = None
@@ -702,7 +723,7 @@ def top_borrowed_books(limit=8):
 
 def seed_demo_workflows():
     """Create a small idempotent demo dataset for management screens."""
-    if os.getenv('DEMO_DATA','true').strip().lower() not in ('1','true','yes','on'): return False
+    if _config('DEMO_DATA', 'true').strip().lower() not in ('1','true','yes','on'): return False
     with get_conn() as conn:
         if conn.execute('SELECT COUNT(*) AS n FROM loans').fetchone()['n']: return False
         users={r['username']:r for r in conn.execute("SELECT id,username FROM users WHERE username IN ('docgia','docgia2','docgia3')").fetchall()}
