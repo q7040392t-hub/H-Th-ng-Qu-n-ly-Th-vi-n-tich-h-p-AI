@@ -1109,16 +1109,22 @@ section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid
 
 /* ===== FLOATING CORNER CHATBOT WIDGET (HARMONIOUS PURPLE LIGHT CARD) ===== */
 body [data-testid="stDialog"]{
-  background:transparent!important;
-  pointer-events:none!important;
+  background:rgba(0,0,0,.15)!important;
   z-index:999999!important;
 }
-body [data-testid="stDialog"] div[role="dialog"]{
+body [data-testid="stDialog"] div[role="dialog"],
+body [data-testid="stDialog"] div[role="dialog"] *,
+body [data-testid="stDialog"] input,
+body [data-testid="stDialog"] button,
+body [data-testid="stDialog"] form,
+body [data-testid="stDialog"] [data-baseweb="input"]{
   pointer-events:auto!important;
-  width:min(320px,calc(100vw - 32px))!important;
-  max-width:320px!important;
-  max-height:430px!important;
-  height:430px!important;
+}
+body [data-testid="stDialog"] div[role="dialog"]{
+  width:min(330px,calc(100vw - 32px))!important;
+  max-width:330px!important;
+  max-height:440px!important;
+  height:440px!important;
   position:fixed!important;
   right:24px!important;
   bottom:80px!important;
@@ -1130,7 +1136,7 @@ body [data-testid="stDialog"] div[role="dialog"]{
   color:#1e1b4b!important;
   border:1px solid #e2d9f3!important;
   border-radius:18px!important;
-  box-shadow:0 14px 40px rgba(103,58,183,.2),0 0 20px rgba(139,92,246,.12)!important;
+  box-shadow:0 14px 40px rgba(103,58,183,.25),0 0 20px rgba(139,92,246,.15)!important;
   padding:0 12px 10px!important;
   overflow:hidden!important;
   z-index:999999!important;
@@ -2112,7 +2118,7 @@ def public_chat_dialog():
         st.rerun(scope='fragment')
 
     with st.form('waka_chat_form',clear_on_submit=True):
-        q=st.text_input('Nhập tin nhắn',placeholder='Nhập tin nhắn...',label_visibility='collapsed')
+        q=st.text_input('Nhập tin nhắn',placeholder='Nhập tin nhắn...',label_visibility='collapsed',key='waka_chat_input_text')
         send=st.form_submit_button('✈ Gửi',type='primary',use_container_width=True)
     if send and q.strip():
         st.session_state.public_chat_messages.append({'role':'user','content':q.strip()})
