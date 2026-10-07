@@ -271,15 +271,8 @@ div[role="dialog"] input{background:#191b1e!important;color:#fff!important;borde
 .role-pill{display:inline-block;padding:5px 10px;border-radius:999px;background:#eee8ff;color:#6f4cd8;font-weight:900;font-size:.7rem}.status-pill{display:inline-block;padding:5px 10px;border-radius:999px;background:#e6fbf3;color:#15936f;font-weight:900;font-size:.7rem}.status-pill.locked{background:#ffe8ed;color:#dc4660}
 .ai-fast-note{background:linear-gradient(135deg,#f3e8ff 0%,#fce7f3 100%)!important;border:1px solid #e9d5ff!important;border-radius:16px!important;padding:12px 18px!important;color:#6b21a8!important;font-size:.85rem!important;font-weight:700!important;margin-bottom:16px!important;box-shadow:0 4px 14px rgba(168,85,247,.08)!important}
 .ai-answer-shell{background:#ffffff!important;border:1px solid #e5e7eb!important;border-radius:20px!important;padding:16px 20px!important;box-shadow:0 8px 25px rgba(0,0,0,.04)!important}
-.floating-ai{width:60px!important;height:60px!important;min-width:60px!important;min-height:60px!important;right:24px!important;bottom:24px!important;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%)!important;box-shadow:0 12px 30px rgba(139,92,246,.45)!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;transition:all .25s ease!important}
+.floating-ai{width:56px!important;height:56px!important;min-width:56px!important;min-height:56px!important;right:22px!important;bottom:22px!important;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%)!important;box-shadow:0 12px 30px rgba(139,92,246,.45)!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;transition:all .25s ease!important}
 .floating-ai:hover{transform:scale(1.08) translateY(-2px)!important;box-shadow:0 16px 36px rgba(139,92,246,.6)!important}
-div[role="dialog"]{position:fixed!important;right:22px!important;bottom:22px!important;left:auto!important;top:auto!important;transform:none!important;width:min(440px,calc(100vw - 32px))!important;max-width:440px!important;max-height:80vh!important;overflow-y:auto!important;background:rgba(20,18,30,.96)!important;backdrop-filter:blur(16px)!important;border:1px solid rgba(139,92,246,.35)!important;border-radius:24px!important;box-shadow:0 28px 75px rgba(0,0,0,.55)!important}
-div[role="dialog"] [data-testid="stButton"] button{background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.14)!important;color:#f3f4f6!important;min-height:44px!important;border-radius:12px!important;font-weight:700!important;transition:all .2s ease!important}
-div[role="dialog"] [data-testid="stButton"] button:hover{border-color:#a855f7!important;background:rgba(168,85,247,.2)!important;color:#fff!important;transform:translateY(-1px)!important}
-div[role="dialog"] [data-testid="stButton"] button[kind="primary"]{background:linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899)!important;border:0!important;box-shadow:0 4px 15px rgba(99,102,241,.35)!important}
-div[role="dialog"] input{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important;border-radius:14px!important}
-.chat-popup-head{margin:-1rem -1rem 16px -1rem!important;padding:16px 20px!important;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;border-radius:22px 22px 0 0!important;color:#fff!important;font-size:1.15rem!important;font-weight:900!important;box-shadow:0 4px 15px rgba(99,102,241,.3)!important}
-.chat-popup-bot{width:68px!important;height:68px!important;background:linear-gradient(135deg,#8b5cf6,#ec4899)!important;border:3px solid #f3e8ff!important;box-shadow:0 8px 24px rgba(139,92,246,.35)!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:2rem!important;margin:6px auto 10px!important}
 
 /* ===== EXPORT & REPORT CARDS UI ===== */
 .export-card {
@@ -1114,23 +1107,66 @@ section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[kind="primary"] *,
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid="stBaseButton-primary"] *{color:#354761!important;}
 
-/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET (LUXURY PURPLE THEME) ===== */
+/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET (LUXURY PURPLE THEME V2) ===== */
+div[data-testid="stDialog"]{
+  background:rgba(0,0,0,.35)!important;
+}
+div[role="dialog"],
 div[data-testid="stDialog"] div[role="dialog"]{
-  width:min(370px,calc(100vw - 24px))!important;
-  max-width:370px!important;
-  max-height:550px!important;
-  height:550px!important;
+  width:min(350px,calc(100vw - 24px))!important;
+  max-width:350px!important;
+  max-height:510px!important;
+  height:510px!important;
+  position:fixed!important;
+  right:20px!important;
+  bottom:20px!important;
+  left:auto!important;
+  top:auto!important;
+  transform:none!important;
+  margin:0!important;
   background:linear-gradient(180deg,#18132b 0%,#110d20 100%)!important;
   color:#f3e8ff!important;
   border:1px solid #3c2a5c!important;
-  border-radius:22px!important;
-  box-shadow:0 25px 65px rgba(15,9,30,.85),0 0 25px rgba(139,92,246,.2)!important;
-  padding:0 16px 14px!important;
+  border-radius:20px!important;
+  box-shadow:0 20px 60px rgba(10,6,22,.85),0 0 25px rgba(139,92,246,.3)!important;
+  padding:0 14px 12px!important;
   overflow:hidden!important;
 }
-div[data-testid="stDialog"] div[role="dialog"] [data-testid="stDialogHeader"]{
-  display:none!important;
+div[data-testid="stDialog"] [data-testid="stDialogHeader"]{
+  background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;
+  padding:10px 14px!important;
+  margin:-1rem -1rem 10px -1rem!important;
+  border-radius:19px 19px 0 0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  box-shadow:0 4px 15px rgba(139,92,246,.35)!important;
 }
+div[data-testid="stDialog"] [data-testid="stDialogHeader"] h2,
+div[data-testid="stDialog"] [data-testid="stDialogHeader"] span{
+  color:#ffffff!important;
+  font-size:.95rem!important;
+  font-weight:900!important;
+}
+div[data-testid="stDialog"] [data-testid="stDialogHeader"] button,
+div[data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="Close"]{
+  color:#ffffff!important;
+  background:rgba(255,255,255,.15)!important;
+  border:0!important;
+  border-radius:50%!important;
+  width:26px!important;
+  height:26px!important;
+  min-height:26px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+div[data-testid="stDialog"] [data-testid="stDialogHeader"] button:hover{
+  background:rgba(255,255,255,.3)!important;
+  color:#ffffff!important;
+}
+
 div[role="dialog"] [data-testid="stMarkdownContainer"] p,
 div[role="dialog"] [data-testid="stMarkdownContainer"] li,
 div[role="dialog"] [data-testid="stMarkdownContainer"] span,
@@ -1141,12 +1177,12 @@ div[role="dialog"] caption{
 
 .waka-head-bar{
   background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;
-  padding:12px 16px!important;
+  padding:10px 14px!important;
   display:flex!important;
   align-items:center!important;
   justify-content:space-between!important;
   color:#ffffff!important;
-  font-size:1rem!important;
+  font-size:.92rem!important;
   font-weight:800!important;
   box-shadow:0 4px 20px rgba(139,92,246,.35)!important;
   margin:-1rem -1rem 10px -1rem!important;
@@ -1157,20 +1193,20 @@ div[role="dialog"] caption{
   gap:8px!important;
 }
 .waka-bot-avatar{
-  width:32px!important;
-  height:32px!important;
+  width:28px!important;
+  height:28px!important;
   border-radius:50%!important;
   background:rgba(255,255,255,.25)!important;
   display:inline-flex!important;
   align-items:center!important;
   justify-content:center!important;
-  font-size:1.1rem!important;
+  font-size:1rem!important;
 }
 .waka-status-badge{
-  font-size:.68rem!important;
+  font-size:.65rem!important;
   background:rgba(0,0,0,.3)!important;
   color:#f5d0fe!important;
-  padding:2px 8px!important;
+  padding:2px 7px!important;
   border-radius:99px!important;
   font-weight:700!important;
   border:1px solid rgba(255,255,255,.2)!important;
@@ -1179,71 +1215,71 @@ div[role="dialog"] caption{
   background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(217,70,239,.25))!important;
   border:1px solid rgba(168,85,247,.4)!important;
   color:#e9d5ff!important;
-  font-size:.84rem!important;
+  font-size:.8rem!important;
   font-weight:700!important;
-  padding:10px 14px!important;
-  border-radius:18px!important;
-  margin:8px 4px 10px!important;
+  padding:8px 12px!important;
+  border-radius:14px!important;
+  margin:6px 2px 8px!important;
   text-align:center!important;
-  box-shadow:0 4px 12px rgba(139,92,246,.15)!important;
+  box-shadow:0 3px 10px rgba(139,92,246,.15)!important;
 }
 .waka-msg-user{
-  margin:6px 4px 6px auto!important;
-  max-width:82%!important;
-  padding:9px 14px!important;
-  border-radius:18px 18px 4px 18px!important;
+  margin:5px 2px 5px auto!important;
+  max-width:85%!important;
+  padding:8px 12px!important;
+  border-radius:16px 16px 4px 16px!important;
   background:linear-gradient(135deg,#7c3aed,#a855f7 60%,#ec4899)!important;
   color:#ffffff!important;
-  font-size:.85rem!important;
-  line-height:1.45!important;
-  box-shadow:0 4px 14px rgba(124,58,237,.35)!important;
+  font-size:.82rem!important;
+  line-height:1.4!important;
+  box-shadow:0 3px 10px rgba(124,58,237,.35)!important;
   word-break:break-word!important;
 }
 .waka-msg-ai-wrap{
   display:flex!important;
   align-items:flex-start!important;
-  gap:8px!important;
-  margin:8px 4px!important;
+  gap:6px!important;
+  margin:6px 2px!important;
 }
 .waka-ai-avatar{
-  width:32px!important;
-  height:32px!important;
-  flex:0 0 32px!important;
+  width:28px!important;
+  height:28px!important;
+  flex:0 0 28px!important;
   border-radius:50%!important;
   background:linear-gradient(135deg,#2e1065,#3b0764)!important;
   border:2px solid #a855f7!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  font-size:1.1rem!important;
+  font-size:1rem!important;
   box-shadow:0 2px 8px rgba(168,85,247,.3)!important;
 }
 .waka-msg-ai-box{
   background:#1f1838!important;
   border:1px solid #3b2d5e!important;
   color:#f3e8ff!important;
-  border-radius:16px!important;
-  padding:10px 14px!important;
-  font-size:.85rem!important;
-  line-height:1.5!important;
-  box-shadow:0 4px 14px rgba(0,0,0,.35)!important;
+  border-radius:14px!important;
+  padding:8px 12px!important;
+  font-size:.82rem!important;
+  line-height:1.45!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.35)!important;
   flex:1!important;
 }
 .waka-msg-ai-box *{
   color:#f3e8ff!important;
 }
 div[role="dialog"] [data-testid="stForm"]{
-  background:#171129!important;
+  background:#140f26!important;
   border:1px solid #3b2d5e!important;
-  border-radius:18px!important;
-  margin:6px 0!important;
-  padding:4px 6px!important;
+  border-radius:16px!important;
+  margin:4px 0!important;
+  padding:3px 5px!important;
 }
 div[role="dialog"] input{
   background:transparent!important;
   border:0!important;
   color:#ffffff!important;
-  font-size:.86rem!important;
+  font-size:.83rem!important;
 }
 div[role="dialog"] input::placeholder{
   color:#94a3b8!important;
@@ -1252,22 +1288,26 @@ div[role="dialog"] [data-testid="stFormSubmitButton"] button{
   background:linear-gradient(135deg,#7c3aed,#d946ef)!important;
   border:0!important;
   color:#ffffff!important;
-  border-radius:14px!important;
+  border-radius:12px!important;
   font-weight:800!important;
-  min-height:36px!important;
-  box-shadow:0 4px 12px rgba(124,58,237,.3)!important;
+  min-height:34px!important;
+  font-size:.82rem!important;
+  box-shadow:0 4px 12px rgba(124,58,237,.35)!important;
 }
 div[role="dialog"] [data-testid="stButton"] button{
   background:#1f1838!important;
   border:1px solid #3b2d5e!important;
   color:#c084fc!important;
-  border-radius:12px!important;
-  font-size:.78rem!important;
-  min-height:36px!important;
+  border-radius:11px!important;
+  font-size:.76rem!important;
+  font-weight:750!important;
+  min-height:34px!important;
+  padding:5px 10px!important;
+  margin:1px 0!important;
 }
 div[role="dialog"] [data-testid="stButton"] button:hover{
   background:#2e2150!important;
-  color:#e9d5ff!important;
+  color:#f3e8ff!important;
   border-color:#a855f7!important;
 }
 
