@@ -1114,17 +1114,17 @@ section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[kind="primary"] *,
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid="stBaseButton-primary"] *{color:#354761!important;}
 
-/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET ===== */
+/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET (LUXURY PURPLE THEME) ===== */
 div[data-testid="stDialog"] div[role="dialog"]{
   width:min(370px,calc(100vw - 24px))!important;
   max-width:370px!important;
-  max-height:540px!important;
-  height:540px!important;
-  background:#111318!important;
-  color:#e2e8f0!important;
-  border:1px solid #282e3d!important;
-  border-radius:20px!important;
-  box-shadow:0 20px 60px rgba(0,0,0,.75)!important;
+  max-height:550px!important;
+  height:550px!important;
+  background:linear-gradient(180deg,#18132b 0%,#110d20 100%)!important;
+  color:#f3e8ff!important;
+  border:1px solid #3c2a5c!important;
+  border-radius:22px!important;
+  box-shadow:0 25px 65px rgba(15,9,30,.85),0 0 25px rgba(139,92,246,.2)!important;
   padding:0 16px 14px!important;
   overflow:hidden!important;
 }
@@ -1136,11 +1136,11 @@ div[role="dialog"] [data-testid="stMarkdownContainer"] li,
 div[role="dialog"] [data-testid="stMarkdownContainer"] span,
 div[role="dialog"] label,
 div[role="dialog"] caption{
-  color:#e2e8f0!important;
+  color:#f3e8ff!important;
 }
 
 .waka-head-bar{
-  background:linear-gradient(135deg,#00b894 0%,#00cec9 100%)!important;
+  background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;
   padding:12px 16px!important;
   display:flex!important;
   align-items:center!important;
@@ -1148,7 +1148,7 @@ div[role="dialog"] caption{
   color:#ffffff!important;
   font-size:1rem!important;
   font-weight:800!important;
-  box-shadow:0 4px 15px rgba(0,184,148,.25)!important;
+  box-shadow:0 4px 20px rgba(139,92,246,.35)!important;
   margin:-1rem -1rem 10px -1rem!important;
 }
 .waka-head-title{
@@ -1168,32 +1168,35 @@ div[role="dialog"] caption{
 }
 .waka-status-badge{
   font-size:.68rem!important;
-  background:rgba(0,0,0,.25)!important;
+  background:rgba(0,0,0,.3)!important;
+  color:#f5d0fe!important;
   padding:2px 8px!important;
   border-radius:99px!important;
   font-weight:700!important;
+  border:1px solid rgba(255,255,255,.2)!important;
 }
 .waka-suggest-prompt{
-  background:#00b894!important;
-  color:#ffffff!important;
+  background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(217,70,239,.25))!important;
+  border:1px solid rgba(168,85,247,.4)!important;
+  color:#e9d5ff!important;
   font-size:.84rem!important;
   font-weight:700!important;
   padding:10px 14px!important;
   border-radius:18px!important;
   margin:8px 4px 10px!important;
   text-align:center!important;
-  box-shadow:0 4px 12px rgba(0,184,148,.2)!important;
+  box-shadow:0 4px 12px rgba(139,92,246,.15)!important;
 }
 .waka-msg-user{
   margin:6px 4px 6px auto!important;
   max-width:82%!important;
   padding:9px 14px!important;
   border-radius:18px 18px 4px 18px!important;
-  background:linear-gradient(135deg,#00b894,#00cec9)!important;
+  background:linear-gradient(135deg,#7c3aed,#a855f7 60%,#ec4899)!important;
   color:#ffffff!important;
   font-size:.85rem!important;
   line-height:1.45!important;
-  box-shadow:0 4px 12px rgba(0,184,148,.2)!important;
+  box-shadow:0 4px 14px rgba(124,58,237,.35)!important;
   word-break:break-word!important;
 }
 .waka-msg-ai-wrap{
@@ -1207,30 +1210,31 @@ div[role="dialog"] caption{
   height:32px!important;
   flex:0 0 32px!important;
   border-radius:50%!important;
-  background:linear-gradient(135deg,#1e2434,#2d364e)!important;
-  border:2px solid #00b894!important;
+  background:linear-gradient(135deg,#2e1065,#3b0764)!important;
+  border:2px solid #a855f7!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
   font-size:1.1rem!important;
+  box-shadow:0 2px 8px rgba(168,85,247,.3)!important;
 }
 .waka-msg-ai-box{
-  background:#1a1e2b!important;
-  border:1px solid #293144!important;
-  color:#e2e8f0!important;
+  background:#1f1838!important;
+  border:1px solid #3b2d5e!important;
+  color:#f3e8ff!important;
   border-radius:16px!important;
   padding:10px 14px!important;
   font-size:.85rem!important;
   line-height:1.5!important;
-  box-shadow:0 4px 14px rgba(0,0,0,.25)!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.35)!important;
   flex:1!important;
 }
 .waka-msg-ai-box *{
-  color:#e2e8f0!important;
+  color:#f3e8ff!important;
 }
 div[role="dialog"] [data-testid="stForm"]{
-  background:#161a26!important;
-  border:1px solid #293144!important;
+  background:#171129!important;
+  border:1px solid #3b2d5e!important;
   border-radius:18px!important;
   margin:6px 0!important;
   padding:4px 6px!important;
@@ -1242,28 +1246,29 @@ div[role="dialog"] input{
   font-size:.86rem!important;
 }
 div[role="dialog"] input::placeholder{
-  color:#76849f!important;
+  color:#94a3b8!important;
 }
 div[role="dialog"] [data-testid="stFormSubmitButton"] button{
-  background:linear-gradient(135deg,#00b894,#00cec9)!important;
+  background:linear-gradient(135deg,#7c3aed,#d946ef)!important;
   border:0!important;
   color:#ffffff!important;
   border-radius:14px!important;
   font-weight:800!important;
   min-height:36px!important;
+  box-shadow:0 4px 12px rgba(124,58,237,.3)!important;
 }
 div[role="dialog"] [data-testid="stButton"] button{
-  background:#181d2b!important;
-  border:1px solid #283044!important;
-  color:#94a3b8!important;
+  background:#1f1838!important;
+  border:1px solid #3b2d5e!important;
+  color:#c084fc!important;
   border-radius:12px!important;
   font-size:.78rem!important;
   min-height:36px!important;
 }
 div[role="dialog"] [data-testid="stButton"] button:hover{
-  background:#232a3e!important;
-  color:#00b894!important;
-  border-color:#00b894!important;
+  background:#2e2150!important;
+  color:#e9d5ff!important;
+  border-color:#a855f7!important;
 }
 
 /* ===== DARK THEME GLOBAL OVERRIDES ===== */
