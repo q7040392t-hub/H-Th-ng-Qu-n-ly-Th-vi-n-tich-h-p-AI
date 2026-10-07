@@ -1,0 +1,22 @@
+QUY ĐỊNH THƯ VIỆN
+
+1. Sinh viên được mượn tối đa 5 cuốn/lần.
+2. Thời hạn mượn thông thường là 14 ngày.
+3. Có thể gia hạn thêm 7 ngày nếu sách chưa có người đặt trước.
+4. Mỗi đầu sách được gia hạn tối đa 1 lần.
+5. Phí trả muộn: 5.000 VNĐ/ngày/cuốn.
+6. Quá hạn trên 30 ngày, tài khoản có thể bị tạm khóa quyền mượn.
+7. Sách mất hoặc hư hỏng phải báo thư viện để xử lý theo quy định.
+
+
+QUY ĐỊNH HẠN MỨC MƯỢN
+Mỗi độc giả được mượn tối đa theo hạn mức cấu hình của thư viện hoặc hạn mức riêng trên hồ sơ độc giả. Yêu cầu đang chờ, đang mượn, quá hạn, chờ trả và sách được ghi nhận chưa trả/mất đều được tính vào hạn mức.
+
+XỬ LÝ SÁCH QUÁ HẠN / KHÔNG TRẢ
+Khi sách quá hạn, hệ thống tự tính tiền phạt theo số ngày quá hạn và chặn yêu cầu mượn mới. Nếu quá hạn đến ngưỡng tự động khóa được cấu hình, tài khoản bị tạm khóa quyền mượn. Quản trị viên có thể đánh dấu sách là chưa trả/mất; khi đó hệ thống cộng phí thay thế theo cấu hình và giữ tài khoản ở trạng thái khóa cho đến khi các nghĩa vụ liên quan được xử lý.
+
+TÌM KIẾM BM25
+Tra cứu sách theo từ khóa sử dụng BM25 để xếp hạng kết quả theo độ liên quan của mã sách, tên sách, tác giả, thể loại, ISBN, nhà xuất bản và mô tả.
+
+RAG TỰ CHỌN
+Trợ lý AI tự xác định câu hỏi thuộc một trong ba nhánh: dữ liệu sách, chính sách thư viện hoặc kiến thức tổng quát. Với dữ liệu sách/chính sách, hệ thống truy xuất ngữ cảnh bằng BM25 trước khi tạo câu trả lời.

@@ -1,0 +1,450 @@
+    rel=str(relative_path or '').replace('\\','/').lstrip('/')
+    return f'app/static/{rel}'
+
+
+def get_ai_service():
+    # Reuse the Gemini client/policy chunks within this browser session.
+    if '_ai_service' not in st.session_state:
+        st.session_state._ai_service=AIService()
+    return st.session_state._ai_service
+
+
+def money(v):
+    return f'{int(v or 0):,} VNĐ'.replace(',', '.')
+
+
+def role_name(role):
+    return {'admin':'Quản trị viên','librarian':'Thủ thư','reader':'Độc giả'}.get(role, role)
+
+
+def status_vi(s):
+    return {
+        'pending':'Chờ duyệt','borrowed':'Đang mượn','overdue':'Quá hạn',
+        'return_requested':'Chờ xác nhận trả','returned':'Đã trả','rejected':'Từ chối',
+        'fulfilled':'Đã xử lý','cancelled':'Đã hủy','active':'Hoạt động','locked':'Bị khóa',
+        'paid':'Đã thanh toán','unpaid':'Chưa thanh toán','lost':'Chưa trả / Mất','lost_resolved':'Đã xử lý mất sách'
+    }.get(s,s)
+
+
+def cover(book):
+    p=STATIC_DIR/(book.get('cover_image') or '')
+    return p if p.exists() else None
+
+
+def csv_bytes(rows):
+    return pd.DataFrame(rows).to_csv(index=False).encode('utf-8-sig') if rows else b''
+
+
+def page_head(title, sub=''):
+    st.markdown(f'<div class="page-title">{html.escape(title)}</div><div class="page-sub">{html.escape(sub)}</div>', unsafe_allow_html=True)
+
+
+if 'user' not in st.session_state: st.session_state.user=None
+if 'public_page' not in st.session_state: st.session_state.public_page='home'
+if 'nav_page' not in st.session_state: st.session_state.nav_page=None
+if 'chat_messages' not in st.session_state: st.session_state.chat_messages=[{'role':'assistant','content':'Xin chào! Mình là Trợ lý SmartLibrary AI. Bạn muốn tìm sách hay hỏi kiến thức gì?'}]
+if 'selected_book' not in st.session_state: st.session_state.selected_book=None
+if 'login_user' not in st.session_state: st.session_state.login_user=''
+if 'login_pass' not in st.session_state: st.session_state.login_pass=''
+if 'login_mode' not in st.session_state: st.session_state.login_mode='login'
+if 'public_category' not in st.session_state: st.session_state.public_category='Tất cả'
+if 'public_catalog_page' not in st.session_state: st.session_state.public_catalog_page=0
+if 'public_catalog_signature' not in st.session_state: st.session_state.public_catalog_signature=None
+if st.session_state.get('_public_chat_version')!='v16':
+    st.session_state._public_chat_version='v16'
+    st.session_state.public_chat_messages=[{'role':'assistant','content':'Xin chào! Mình là Trợ lý AI LIBRA. Bạn muốn tìm sách, hỏi quy định thư viện hay hỏi kiến thức gì?'}]
+elif 'public_chat_messages' not in st.session_state:
+    st.session_state.public_chat_messages=[{'role':'assistant','content':'Xin chào! Mình là Trợ lý AI LIBRA. Bạn muốn tìm sách, hỏi quy định thư viện hay hỏi kiến thức gì?'}]
+# public_chat query param is treated as a one-shot open event (V16)
+
+# ------------------------------------------------------------------
+# PUBLIC LOBBY
+# ------------------------------------------------------------------
+def public_nav():
+    st.markdown('<div class="public-top-strip">LIBRA&nbsp;&nbsp;✦&nbsp;&nbsp;THƯ VIỆN THÔNG MINH&nbsp;&nbsp;✦&nbsp;&nbsp;SÁCH HAY MỖI NGÀY</div>',unsafe_allow_html=True)
+    st.markdown('<div class="public-nav">',unsafe_allow_html=True)
+    cols=st.columns([1.45,.72,.85,.68,.72,.72,.82,1.15,.72,.72])
+    with cols[0]: st.markdown('<div class="public-logo">LIBRA <small>VN</small></div>',unsafe_allow_html=True)
+    category_map=[('Tin học','Công nghệ thông tin'),('Trinh thám','Trinh thám'),('Triết lý','Kỹ năng sống'),('Kỹ năng','Kỹ năng sống'),('Văn học','Văn học Việt Nam')]
+    for idx,(label,category) in enumerate(category_map,1):
+        with cols[idx]:
+            if st.button(label,key='pubnav_'+label,use_container_width=True):
+                st.session_state.public_category=category; st.session_state.public_catalog_page=0; st.session_state.public_page='catalog'; st.rerun()
+    with cols[6]:
+        if st.button('AI thư viện',key='pubnav_ai',use_container_width=True):
+            st.query_params['public_chat']='1'; st.rerun()
+    with cols[7]:
+        st.markdown('<div class="nav-action">',unsafe_allow_html=True)
+        if st.button('🔎 Tìm sách',key='pubnav_search',use_container_width=True):
+            st.session_state.public_category='Tất cả'; st.session_state.public_catalog_page=0; st.session_state.public_page='catalog'; st.rerun()
+        st.markdown('</div>',unsafe_allow_html=True)
+    with cols[8]:
+        st.markdown('<div class="nav-action">',unsafe_allow_html=True)
+        if st.button('Đăng ký',key='pubnav_register',use_container_width=True):
+            st.session_state.login_mode='register'; st.session_state.public_page='login'; st.rerun()
+        st.markdown('</div>',unsafe_allow_html=True)
+    with cols[9]:
+        st.markdown('<div class="nav-login">',unsafe_allow_html=True)
+        if st.button('Đăng nhập',key='pubnav_login',type='primary',use_container_width=True):
+            st.session_state.login_mode='login'; st.session_state.public_page='login'; st.rerun()
+        st.markdown('</div>',unsafe_allow_html=True)
+    st.markdown('</div>',unsafe_allow_html=True)
+
+def book_tile(book, key, allow_detail=True):
+    cp=cover(book)
+    if cp:
+        src=static_url(book.get('cover_image'))
+        visual=(
+            f'<img class="book-cover-img" src="{src}" '
+            f'alt="{html.escape(book.get("title","Sách"))}" '
+            f'loading="lazy" decoding="async">'
+        )
+    else:
+        visual='<div class="book-cover-empty">📖</div>'
+    card=(
+        '<div class="book-tile">' + visual +
+        f'<div class="book-name">{html.escape(book["title"])}</div>' +
+        f'<div class="book-meta">{html.escape(book.get("author", ""))}<br>Còn {book.get("available",0)}/{book.get("quantity",0)} bản</div>' +
+        f'<span class="badge">{html.escape(book.get("category", "Khác"))}</span>' +
+        '</div>'
+    )
+    st.markdown(card,unsafe_allow_html=True)
+    if allow_detail and st.button('Xem chi tiết',key=key,use_container_width=True):
+        db.increment_book_view(book['id'])
+        st.session_state.selected_book=book['id']
+        st.rerun()
+
+
+def render_public_detail():
+    bid=st.session_state.selected_book
+    if not bid: return
+    book=db.get_book(bid)
+    if not book: return
+    st.divider(); page_head('Chi tiết sách', 'Thông tin đầu sách trong kho')
+    a,b=st.columns([1,2.4],gap='large')
+    with a:
+        cp=cover(book)
+        if cp: st.image(str(cp),use_container_width=True)
+    with b:
+        st.subheader(book['title']); st.caption(f"{book['id']} • {book['author']}")
+        st.write(f"**Thể loại:** {book['category']}")
+        st.write(f"**Năm xuất bản:** {book.get('year') or '—'}")
+        st.write(f"**Vị trí:** {book.get('location') or '—'}")
+        st.write(f"**Tình trạng:** còn {book['available']}/{book['quantity']} bản")
+        st.write(book.get('description') or 'Chưa có mô tả.')
+        if st.button('Đăng nhập để mượn sách',type='primary'):
+            st.session_state.public_page='login'; st.rerun()
+    if st.button('Đóng chi tiết'):
+        st.session_state.selected_book=None; st.rerun()
+
+
+def public_home():
+    stats,cats,_=db.admin_stats()
+    tech=static_url(LOBBY_HERO); detective=static_url(LOBBY_DETECTIVE); philosophy=static_url(LOBBY_PHILOSOPHY)
+    st.markdown(f'''<div class="hero-carousel">
+      <div class="hero-slide s1" style="background-image:url('{tech}')"><div class="hero-copy"><div class="hero-chip">💻 SÁCH TIN HỌC & CÔNG NGHỆ</div><h1>Học công nghệ<br>từ những cuốn sách hay</h1><p>Python, AI, dữ liệu, mạng máy tính và kỹ năng lập trình được chọn lọc cho sinh viên.</p></div></div>
+      <div class="hero-slide s2" style="background-image:url('{detective}')"><div class="hero-copy"><div class="hero-chip">🔎 TRINH THÁM & BÍ ẨN</div><h1>Lần theo manh mối<br>qua từng trang sách</h1><p>Những vụ án, bí ẩn và câu chuyện phá án hấp dẫn dành cho người thích suy luận.</p></div></div>
+      <div class="hero-slide s3" style="background-image:url('{philosophy}')"><div class="hero-copy"><div class="hero-chip">🌿 TRIẾT LÝ & PHÁT TRIỂN BẢN THÂN</div><h1>Đọc để hiểu mình<br>và sống sâu sắc hơn</h1><p>Những cuốn sách giúp mở rộng góc nhìn, rèn tư duy và xây dựng một cuộc sống có ý nghĩa.</p></div></div>
+    </div>''',unsafe_allow_html=True)
+    st.markdown('<div class="hero-search-panel">',unsafe_allow_html=True)
+    a,b=st.columns([4.5,1])
+    with a: q=st.text_input('Tìm nhanh ở sảnh',placeholder='🔎 Tìm sách, tác giả, thể loại...',label_visibility='collapsed',key='lobby_search')
+    with b:
+        if st.button('Tìm kiếm',type='primary',use_container_width=True,key='lobby_search_btn'):
+            st.session_state.public_category='Tất cả'; st.session_state.public_catalog_page=0; st.session_state.public_page='catalog'; st.session_state.quick_search=q; st.rerun()
+    st.markdown('</div>',unsafe_allow_html=True)
+    st.markdown('<div class="public-content-pad">',unsafe_allow_html=True)
+    st.markdown('<div class="public-section-title">Thư viện trong những con số</div><div class="public-section-sub">Dữ liệu được cập nhật trực tiếp từ hệ thống</div>',unsafe_allow_html=True)
+    availability=round((stats['available']/stats['copies']*100),1) if stats['copies'] else 0
+    cols=st.columns(4); vals=[('📚',stats['titles'],'Đầu sách'),('👥',stats['readers'],'Độc giả hoạt động'),('📖',stats['borrowed'],'Đang được mượn'),('✨',f'{availability}%','Tỷ lệ bản sẵn sàng')]
+    for col,(ico,num,label) in zip(cols,vals):
+        with col: st.markdown(f'<div class="stat-card"><div class="stat-icon">{ico}</div><div class="stat-num">{num}</div><div class="stat-label">{label}</div></div>',unsafe_allow_html=True)
+    st.markdown('<div class="public-section-title">Khám phá theo thể loại</div><div class="public-section-sub">Tìm đúng cuốn sách bạn đang cần</div>',unsafe_allow_html=True)
+    icons=['💻','🕵️','🌱','📖','🧠','💼','🔬','🎨']; cols=st.columns(4)
+    for i,c in enumerate(cats[:8]):
+        with cols[i%4]: st.markdown(f'<div class="cat-card"><div class="cat-icon">{icons[i%len(icons)]}</div><div class="cat-title">{html.escape(c["category"])}</div><div class="cat-count">{c["titles"]} đầu sách</div></div>',unsafe_allow_html=True)
+    st.markdown('<div class="public-section-title">Sách được quan tâm</div><div class="public-section-sub">Các đầu sách nổi bật trong thư viện</div>',unsafe_allow_html=True)
+    preferred_ids=['U021','U007','U011','U016','U001']
+    books=[db.get_book(bid) for bid in preferred_ids]
+    books=[bk for bk in books if bk]
+    if len(books)<5:
+        used={x['id'] for x in books}
+        extras=[bk for bk in db.list_books() if 'assets/user_covers/' in (bk.get('cover_image') or '') and bk['id'] not in used]
+        books=(books+extras)[:5]
+    cols=st.columns(5)
+    for i,(col,bk) in enumerate(zip(cols,books)):
+        with col: book_tile(bk,f'pubtop_{i}_{bk["id"]}')
+    render_public_detail(); st.markdown('</div>',unsafe_allow_html=True)
+
+def public_catalog():
+    st.markdown('<div class="public-content-pad">',unsafe_allow_html=True)
+    page_head('Tra cứu sách thông minh','Tìm theo tên sách, tác giả, mã sách, ISBN hoặc chủ đề — kết quả xếp theo độ liên quan BM25 từ MySQL')
+
+    all_books=db.list_books()
+    copies=sum(int(x.get('quantity') or 0) for x in all_books)
+    available=sum(int(x.get('available') or 0) for x in all_books)
+    categories=len({x.get('category') for x in all_books if x.get('category')})
+    s1,s2,s3,s4=st.columns(4)
+    for col,(ico,label,value,note) in zip(
+        (s1,s2,s3,s4),
+        [
+            ('📚','Đầu sách',len(all_books),f'{copies} bản trong kho'),
+            ('✅','Bản sẵn sàng',available,'Có thể mượn ngay'),
+            ('🏷️','Thể loại',categories,'Danh mục đang phục vụ'),
+            ('🤖','Tìm kiếm','BM25 + AI','Dữ liệu trực tiếp từ MySQL'),
+        ]
+    ):
+        with col:
+            st.markdown(f'<div class="admin-summary-card"><div class="admin-summary-label">{ico} {label}</div><div class="admin-summary-value">{value}</div><div class="admin-summary-note">{note}</div></div>',unsafe_allow_html=True)
+
+    if 'catalog_search_q' not in st.session_state:
+        st.session_state.catalog_search_q=''
+    if 'catalog_search_cat' not in st.session_state:
+        st.session_state.catalog_search_cat=st.session_state.public_category
+    if 'catalog_search_only' not in st.session_state:
+        st.session_state.catalog_search_only=False
+
+    incoming=st.session_state.pop('quick_search','') if 'quick_search' in st.session_state else ''
+    if incoming:
+        st.session_state.catalog_search_q=incoming
+        st.session_state.public_catalog_page=0
+
+    st.write('')
+    with st.form('public_catalog_search_form'):
+        a,b,c,d=st.columns([2.5,1.1,.85,.7])
+        with a:
+            q_input=st.text_input('Từ khóa',value=st.session_state.catalog_search_q,placeholder='Ví dụ: Python, tình yêu, trinh thám, Nguyễn Nhật Ánh, B001...')
+        cats=['Tất cả']+db.list_categories()
+        selected=st.session_state.public_category if st.session_state.public_category in cats else 'Tất cả'
+        with b:
+            cat_input=st.selectbox('Thể loại',cats,index=cats.index(selected))
+        with c:
+            only_input=st.checkbox('Chỉ sách còn',value=st.session_state.catalog_search_only)
+        with d:
+            st.markdown('<div style="height:28px"></div>',unsafe_allow_html=True)
+            submitted=st.form_submit_button('🔎 Tra cứu',type='primary',use_container_width=True)
+    if submitted:
+        st.session_state.catalog_search_q=q_input.strip()
+        st.session_state.catalog_search_cat=cat_input
+        st.session_state.catalog_search_only=bool(only_input)
+        st.session_state.public_category=cat_input
+        st.session_state.public_catalog_page=0
+        st.rerun()
+
+    q=st.session_state.catalog_search_q.strip()
+    cat=st.session_state.catalog_search_cat if st.session_state.catalog_search_cat in ['Tất cả']+db.list_categories() else 'Tất cả'
+    only=st.session_state.catalog_search_only
+    books=db.list_books(q,cat,only)
+
+    # IMPORTANT: BM25 already returns relevance order. Never sort it again when searching.
+    if not q:
+        books=sorted(books,key=lambda bk:(0 if 'assets/user_covers/' in (bk.get('cover_image') or '') else 1,bk.get('title','').lower()))
+
+    if q:
+        st.markdown(
+            f'<div class="search-result-note"><b>🎯 {len(books)} kết quả phù hợp</b> cho “{html.escape(q)}”. '
+            'Thứ tự dựa trên mức độ liên quan, không phải thứ tự ABC.</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown('<div class="search-result-note"><b>📚 Kho sách</b> — nhập từ khóa để tìm thông minh theo nội dung.</div>',unsafe_allow_html=True)
+
+    if not books:
+        st.info('Không tìm thấy sách phù hợp. Hãy thử tên tác giả, thể loại hoặc từ khóa ngắn hơn.')
+        st.markdown('</div>',unsafe_allow_html=True)
+        return
+
+    page_size=8
+    total_pages=max(1, math.ceil(len(books)/page_size))
+    st.session_state.public_catalog_page=min(st.session_state.public_catalog_page,total_pages-1)
+    page=st.session_state.public_catalog_page
+    start_idx=page*page_size
+    shown=books[start_idx:start_idx+page_size]
+
+    p1,p2,p3=st.columns([1,2,1])
+    with p1:
+        if st.button('← Trang trước',disabled=page<=0,use_container_width=True,key='catalog_prev'):
+            st.session_state.public_catalog_page=max(0,page-1); st.rerun()
+    with p2:
+        st.markdown(f'<div style="text-align:center;padding:10px;color:#7c8498;font-weight:850">Trang {page+1}/{total_pages} • {len(books)} kết quả</div>',unsafe_allow_html=True)
+    with p3:
+        if st.button('Trang sau →',disabled=page>=total_pages-1,use_container_width=True,key='catalog_next'):
+            st.session_state.public_catalog_page=min(total_pages-1,page+1); st.rerun()
+
+    for i in range(0,len(shown),4):
+        cols=st.columns(4,gap='medium')
+        for j,bk in enumerate(shown[i:i+4]):
+            with cols[j]:
+                book_tile(bk,f'pubcat_{page}_{bk["id"]}')
+                if q and bk.get('_bm25_score') is not None:
+                    st.caption(f'🎯 Độ liên quan: {bk["_bm25_score"]:.2f}')
+
+    render_public_detail()
+    st.markdown('</div>',unsafe_allow_html=True)
+
+
+def public_about():
+    page_head('Giới thiệu SmartLibrary AI','Hệ thống quản lý thư viện tích hợp trí tuệ nhân tạo')
+    a,b,c=st.columns(3)
+    for col,ico,title,text in [
+        (a,'📚','Quản lý tập trung','Quản lý sách, độc giả, mượn trả, đặt trước và tiền phạt trên một hệ thống.'),
+        (b,'🤖','Trợ lý AI','Hỗ trợ tra cứu sách, gợi ý tài liệu và trả lời kiến thức tổng quát.'),
+        (c,'📊','Báo cáo trực quan','Theo dõi tình hình vận hành và xuất dữ liệu nhanh cho quản trị viên.')]:
+        with col: st.markdown(f'<div class="panel" style="min-height:170px"><div style="font-size:2rem">{ico}</div><h3>{title}</h3><div class="page-sub">{text}</div></div>',unsafe_allow_html=True)
+
+
+def public_contact():
+    page_head('Liên hệ thư viện','Thông tin hỗ trợ độc giả')
+    a,b=st.columns(2)
+    with a:
+        st.info(f"📧 {db.get_setting('library_email','library@ictu.edu.vn')}\n\n☎️ {db.get_setting('library_phone','0966320627')}\n\n📍 Trung tâm Thư viện - SmartLibrary")
+    with b:
+        with st.form('contact_form'):
+            st.text_input('Họ tên'); st.text_input('Email'); st.text_area('Nội dung')
+            if st.form_submit_button('Gửi phản hồi',type='primary'): st.success('Đã ghi nhận phản hồi (bản demo).')
+
+
+def login_page():
+    left,center,right=st.columns([1.15,1,1.15])
+    with center:
+        st.markdown('<div class="login-page-wrap">',unsafe_allow_html=True)
+        st.markdown('<div class="login-brand"><div class="login-logo">▣</div><div class="login-title">SmartLibrary <span class="ai-badge">AI</span></div><div class="login-sub">Hệ thống Quản lý Thư viện Thông minh</div></div>',unsafe_allow_html=True)
+        ta,tb=st.columns(2)
+        with ta:
+            if st.button('Đăng nhập',type='primary' if st.session_state.login_mode=='login' else 'secondary',use_container_width=True,key='switch_login'): st.session_state.login_mode='login';st.rerun()
+        with tb:
+            if st.button('Đăng ký độc giả',type='primary' if st.session_state.login_mode=='register' else 'secondary',use_container_width=True,key='switch_register'): st.session_state.login_mode='register';st.rerun()
+        if st.session_state.login_mode=='login':
+            with st.container(border=True):
+                st.markdown('<div class="login-mode-title">Đăng nhập</div><div class="login-mode-sub">Đăng nhập để sử dụng hệ thống thư viện</div>',unsafe_allow_html=True)
+                with st.form('login_form'):
+                    u=st.text_input('👤 Tên đăng nhập',value=st.session_state.login_user,placeholder='Tên đăng nhập...')
+                    p=st.text_input('🔒 Mật khẩu',value=st.session_state.login_pass,type='password',placeholder='Mật khẩu...')
+                    go=st.form_submit_button('↪ Đăng nhập',type='primary',use_container_width=True)
+                if go:
+                    ok,msg,user=auth.authenticate(u,p)
+                    if ok:
+                        st.session_state.user=user;st.session_state.nav_page='Trang chủ';db.log_activity(user['id'],'Đăng nhập','Đăng nhập hệ thống');st.query_params.clear();st.rerun()
+                    st.error(msg)
+                st.divider();st.markdown('<div class="quick-title">🔑 Tài khoản dùng thử nhanh</div>',unsafe_allow_html=True)
+                x,y,z=st.columns(3)
+                with x:
+                    if st.button('Admin',use_container_width=True,key='quick_admin'): st.session_state.login_user='admin';st.session_state.login_pass='admin123';st.rerun()
+                with y:
+                    if st.button('Thủ thư',use_container_width=True,key='quick_librarian'): st.session_state.login_user='thuthu';st.session_state.login_pass='thuthu123';st.rerun()
+                with z:
+                    if st.button('Độc giả',use_container_width=True,key='quick_reader'): st.session_state.login_user='docgia';st.session_state.login_pass='reader123';st.rerun()
+        else:
+            with st.container(border=True):
+                st.markdown('<div class="login-mode-title">Tạo tài khoản độc giả</div><div class="login-mode-sub">Đăng ký để mượn sách, đặt trước và sử dụng AI</div>',unsafe_allow_html=True)
+                with st.form('register_form'):
+                    full_name=st.text_input('Họ và tên');username=st.text_input('Tên đăng nhập');email=st.text_input('Email');phone=st.text_input('Số điện thoại');password=st.text_input('Mật khẩu',type='password');password2=st.text_input('Nhập lại mật khẩu',type='password');reg=st.form_submit_button('Tạo tài khoản',type='primary',use_container_width=True)
+                if reg:
+                    if password!=password2: st.error('Mật khẩu nhập lại không khớp.')
+                    else:
+                        ok,msg=auth.register_reader(username,password,full_name,email,phone)
+                        if ok: st.success('Đăng ký thành công. Bạn có thể đăng nhập ngay.');st.session_state.login_user=username;st.session_state.login_pass=password;st.session_state.login_mode='login'
+                        else: st.error(msg)
+        if st.button('← Quay lại sảnh thư viện',use_container_width=True,key='back_lobby'): st.session_state.public_page='home';st.session_state.login_mode='login';st.rerun()
+        st.markdown('</div>',unsafe_allow_html=True)
+
+
+def public_ai():
+    st.markdown('<div class="public-content-pad">',unsafe_allow_html=True)
+    page_head('Trợ lý AI thư viện','Hỏi về sách trong kho hoặc kiến thức tổng quát')
+    ai=get_ai_service(); a,b,c=st.columns([1,2.4,1])
+    with b:
+        with st.container(border=True):
+            for m in st.session_state.public_chat_messages:
+                with st.chat_message(m['role']): st.markdown(m['content'])
+            q=st.chat_input('Hỏi về sách, học tập, lập trình...',key='public_ai_input')
+            if q:
+                st.session_state.public_chat_messages.append({'role':'user','content':q}); ans=ai.answer(q,st.session_state.public_chat_messages[:-1]); st.session_state.public_chat_messages.append({'role':'assistant','content':ans}); st.rerun()
+            if st.button('← Quay lại trang chủ',use_container_width=True,key='public_ai_back'): st.query_params.clear(); st.session_state.public_page='home'; st.rerun()
+    st.markdown('</div>',unsafe_allow_html=True)
+
+@st.dialog("Trợ lý ảo LIBRA", width="small")
+def public_chat_dialog():
+    ai=get_ai_service()
+    ai_state='Gemini AI + RAG MySQL' if ai.enabled else 'RAG MySQL • chưa cấu hình Gemini'
+    ai_dot='🟢' if ai.enabled else '🟡'
+    st.markdown(
+        '<div class="chat-popup-head">🤖 &nbsp; Trợ lý AI LIBRA</div>'
+        '<div class="chat-popup-bot">🤖</div>'
+        '<div class="chat-popup-title">Xin chào!</div>'
+        f'<div class="chat-popup-sub">{ai_dot} {ai_state}<br>⚡ Tra cứu sách/chính sách trả lời cục bộ; Gemini chỉ gọi khi cần.</div>',
+        unsafe_allow_html=True
+    )
+    suggestions=[
+        'Gợi ý sách theo sở thích của tôi',
+        'Sách nào đang được quan tâm nhất?',
+        'Hướng dẫn mượn / trả / đặt trước',
+        'Giải thích RAG và BM25 đang dùng trong hệ thống',
+    ]
+    for i,prompt in enumerate(suggestions):
+        if st.button(prompt+'  →',key=f'popup_suggest_{i}',use_container_width=True):
+            st.session_state.public_chat_messages.append({'role':'user','content':prompt})
+            rag=ai.retrieve(prompt)
+            answer=ai.answer(prompt,st.session_state.public_chat_messages[:-1],rag=rag)
+            st.session_state.public_chat_messages.append({'role':'assistant','content':answer})
+            st.rerun(scope='fragment')
+
+    if len(st.session_state.public_chat_messages)>1:
+        st.markdown('<div class="chat-history-title">Hội thoại gần đây</div>',unsafe_allow_html=True)
+        for m in st.session_state.public_chat_messages[-6:]:
+            if m['role']=='user':
+                st.markdown(f'<div class="chat-bubble-user">{html.escape(m["content"])}</div>',unsafe_allow_html=True)
+            else:
+                st.markdown('<div class="chat-bubble-ai">',unsafe_allow_html=True)
+                st.markdown(m['content'])
+                st.markdown('</div>',unsafe_allow_html=True)
+
+    with st.form('popup_chat_form',clear_on_submit=True):
+        q=st.text_input('Nhập tin nhắn',placeholder='Hỏi về sách, quy định hoặc kiến thức...',label_visibility='collapsed')
+        send=st.form_submit_button('➤ Gửi cho AI',type='primary',use_container_width=True)
+    if send and q.strip():
+        st.session_state.public_chat_messages.append({'role':'user','content':q.strip()})
+        rag=ai.retrieve(q.strip())
+        answer=ai.answer(q.strip(),st.session_state.public_chat_messages[:-1],rag=rag)
+        st.session_state.public_chat_messages.append({'role':'assistant','content':answer})
+        st.rerun(scope='fragment')
+
+    c1,c2=st.columns(2)
+    with c1:
+        if st.button('🧹 Xóa hội thoại',key='clear_public_chat',use_container_width=True):
+            st.session_state.public_chat_messages=[{'role':'assistant','content':'Xin chào! Bạn muốn tìm sách hay hỏi điều gì?'}]
+            st.rerun(scope='fragment')
+    with c2:
+        if st.button('✕ Đóng',key='close_public_chat',use_container_width=True):
+            st.rerun()
+
+
+def public_footer():
+    st.markdown('''<div class="public-footer"><div class="footer-grid"><div><div class="footer-brand">LIBRA</div><div class="footer-small">Thư viện Thông minh tích hợp quản lý sách, mượn trả, thống kê và trợ lý AI.</div><div class="footer-small" style="margin-top:12px">☎ 0966320627<br>✉ library@ictu.edu.vn</div></div><div><div class="footer-head">Về thư viện</div><div class="footer-link">Giới thiệu</div><div class="footer-link">Kho sách</div><div class="footer-link">Thể loại</div><div class="footer-link">Liên hệ</div></div><div><div class="footer-head">Thông tin hữu ích</div><div class="footer-link">Quy định mượn trả</div><div class="footer-link">Chính sách tiền phạt</div><div class="footer-link">Câu hỏi thường gặp</div><div class="footer-link">Bảo mật thông tin</div></div><div><div class="footer-head">Hỗ trợ</div><div class="footer-link">Trợ lý AI</div><div class="footer-link">Hướng dẫn sử dụng</div><div class="footer-link">Phản hồi</div><div class="footer-link">Thông báo</div></div></div><div class="footer-small" style="margin-top:25px;padding-top:18px;border-top:1px solid #493454">© 2026 LIBRA • Hệ thống Quản lý Thư viện Thông minh</div></div>''',unsafe_allow_html=True)
+
+def render_public():
+    st.markdown('<div class="public-shell">',unsafe_allow_html=True)
+    public_nav()
+    if st.session_state.public_page=='home': public_home()
+    elif st.session_state.public_page=='catalog': public_catalog()
+    elif st.session_state.public_page=='about': st.markdown('<div class="public-content-pad">',unsafe_allow_html=True); public_about(); st.markdown('</div>',unsafe_allow_html=True)
+    elif st.session_state.public_page=='contact': st.markdown('<div class="public-content-pad">',unsafe_allow_html=True); public_contact(); st.markdown('</div>',unsafe_allow_html=True)
+    elif st.session_state.public_page=='login': login_page()
+    public_footer()
+    st.markdown('<a class="floating-ai" href="?public_chat=1" target="_self" title="Mở trợ lý AI"><span class="chat-glyph"></span></a>',unsafe_allow_html=True)
+    # One-shot: clear the URL flag immediately so later clicks/reruns do NOT reopen chat.
+    if st.query_params.get('public_chat') == '1':
+        st.query_params.clear()
+        public_chat_dialog()
+    st.markdown('</div>',unsafe_allow_html=True)
+
+# ------------------------------------------------------------------
+# LOGGED-IN SIDEBAR / HEADER
+# ------------------------------------------------------------------
+ADMIN_MENU=[
+    'Trang chủ','Tổng quan & Thống kê','Tra cứu & Quản lý Sách','Quản lý Độc giả',
+    'Quản lý Mượn / Trả / Phạt','Đặt trước Sách','Tài khoản & Phân quyền',
+    'Trợ lý AI & Gợi ý Sách','Báo cáo & Xuất dữ liệu','Cài đặt'
+]
+LIBRARIAN_MENU=[
+    'Trang chủ','Tổng quan & Thống kê','Tra cứu & Quản lý Sách','Quản lý Độc giả',

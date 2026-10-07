@@ -1,0 +1,6 @@
+streamlit>=1.64,<2
+google-genai
+python-dotenv
+pandas
+Pillow
+mysql-connector-python>=9.0
