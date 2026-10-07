@@ -1107,7 +1107,7 @@ section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[kind="primary"] *,
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid="stBaseButton-primary"] *{color:#354761!important;}
 
-/* ===== FLOATING CORNER CHATBOT WIDGET (INTERCOM / CRISP STYLE) ===== */
+/* ===== FLOATING CORNER CHATBOT WIDGET (HARMONIOUS PURPLE LIGHT CARD) ===== */
 body [data-testid="stDialog"]{
   background:transparent!important;
   pointer-events:none!important;
@@ -1126,11 +1126,11 @@ body [data-testid="stDialog"] div[role="dialog"]{
   top:auto!important;
   transform:none!important;
   margin:0!important;
-  background:linear-gradient(180deg,#18132b 0%,#110d20 100%)!important;
-  color:#f3e8ff!important;
-  border:1px solid #3c2a5c!important;
+  background:#ffffff!important;
+  color:#1e1b4b!important;
+  border:1px solid #e2d9f3!important;
   border-radius:18px!important;
-  box-shadow:0 14px 40px rgba(10,6,22,.65),0 0 25px rgba(139,92,246,.25)!important;
+  box-shadow:0 14px 40px rgba(103,58,183,.2),0 0 20px rgba(139,92,246,.12)!important;
   padding:0 12px 10px!important;
   overflow:hidden!important;
   z-index:999999!important;
@@ -1155,7 +1155,7 @@ body [data-testid="stDialog"] [data-testid="stDialogHeader"] p{
 body [data-testid="stDialog"] [data-testid="stDialogHeader"] button,
 body [data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="Close"]{
   color:#ffffff!important;
-  background:rgba(255,255,255,.2)!important;
+  background:rgba(255,255,255,.25)!important;
   border:0!important;
   border-radius:50%!important;
   width:24px!important;
@@ -1167,7 +1167,7 @@ body [data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="
   justify-content:center!important;
 }
 body [data-testid="stDialog"] [data-testid="stDialogHeader"] button:hover{
-  background:rgba(255,255,255,.35)!important;
+  background:rgba(255,255,255,.4)!important;
   color:#ffffff!important;
 }
 
@@ -1176,7 +1176,7 @@ body [data-testid="stDialog"] [data-testid="stMarkdownContainer"] li,
 body [data-testid="stDialog"] [data-testid="stMarkdownContainer"] span,
 body [data-testid="stDialog"] label,
 body [data-testid="stDialog"] caption{
-  color:#f3e8ff!important;
+  color:#1e1b4b!important;
 }
 
 .waka-bot-avatar{
@@ -1191,24 +1191,24 @@ body [data-testid="stDialog"] caption{
 }
 .waka-status-badge{
   font-size:.62rem!important;
-  background:rgba(0,0,0,.3)!important;
-  color:#f5d0fe!important;
+  background:rgba(255,255,255,.25)!important;
+  color:#ffffff!important;
   padding:2px 6px!important;
   border-radius:99px!important;
   font-weight:700!important;
-  border:1px solid rgba(255,255,255,.2)!important;
+  border:1px solid rgba(255,255,255,.3)!important;
 }
 .waka-suggest-prompt{
-  background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(217,70,239,.25))!important;
-  border:1px solid rgba(168,85,247,.4)!important;
-  color:#e9d5ff!important;
+  background:#f3e8ff!important;
+  border:1px solid #d8b4fe!important;
+  color:#6b21a8!important;
   font-size:.78rem!important;
-  font-weight:700!important;
+  font-weight:750!important;
   padding:6px 10px!important;
   border-radius:12px!important;
   margin:4px 2px 6px!important;
   text-align:center!important;
-  box-shadow:0 3px 10px rgba(139,92,246,.15)!important;
+  box-shadow:0 2px 8px rgba(139,92,246,.08)!important;
 }
 .waka-msg-user{
   margin:4px 2px 4px auto!important;
@@ -1219,7 +1219,7 @@ body [data-testid="stDialog"] caption{
   color:#ffffff!important;
   font-size:.8rem!important;
   line-height:1.38!important;
-  box-shadow:0 3px 9px rgba(124,58,237,.35)!important;
+  box-shadow:0 3px 9px rgba(124,58,237,.25)!important;
   word-break:break-word!important;
 }
 .waka-msg-ai-wrap{
@@ -1233,45 +1233,46 @@ body [data-testid="stDialog"] caption{
   height:26px!important;
   flex:0 0 26px!important;
   border-radius:50%!important;
-  background:linear-gradient(135deg,#2e1065,#3b0764)!important;
-  border:1.5px solid #a855f7!important;
+  background:linear-gradient(135deg,#7c3aed,#a855f7)!important;
+  color:#ffffff!important;
+  border:1.5px solid #d8b4fe!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
   font-size:.9rem!important;
-  box-shadow:0 2px 6px rgba(168,85,247,.3)!important;
+  box-shadow:0 2px 6px rgba(168,85,247,.25)!important;
 }
 .waka-msg-ai-box{
-  background:#1f1838!important;
-  border:1px solid #3b2d5e!important;
-  color:#f3e8ff!important;
+  background:#f3e8ff!important;
+  border:1px solid #e9d5ff!important;
+  color:#1e1b4b!important;
   border-radius:13px!important;
   padding:7px 11px!important;
   font-size:.8rem!important;
   line-height:1.4!important;
-  box-shadow:0 3px 9px rgba(0,0,0,.35)!important;
+  box-shadow:0 2px 6px rgba(0,0,0,.04)!important;
   flex:1!important;
 }
 .waka-msg-ai-box *{
-  color:#f3e8ff!important;
+  color:#1e1b4b!important;
 }
 
 body [data-testid="stDialog"] [data-testid="stButton"] button{
-  background:#1f1838!important;
-  border:1px solid #3b2d5e!important;
-  color:#c084fc!important;
+  background:#f8f5ff!important;
+  border:1px solid #e9d5ff!important;
+  color:#6b21a8!important;
   border-radius:10px!important;
   font-size:.74rem!important;
   font-weight:750!important;
   min-height:30px!important;
   padding:4px 8px!important;
   margin:1px 0!important;
-  box-shadow:0 2px 5px rgba(0,0,0,.2)!important;
+  box-shadow:0 2px 5px rgba(0,0,0,.03)!important;
 }
 body [data-testid="stDialog"] [data-testid="stButton"] button:hover{
-  background:#2e2150!important;
+  background:#7c3aed!important;
   color:#ffffff!important;
-  border-color:#a855f7!important;
+  border-color:#7c3aed!important;
 }
 body [data-testid="stDialog"] [data-testid="stFormSubmitButton"] button{
   background:linear-gradient(135deg,#7c3aed,#d946ef)!important;
@@ -1281,11 +1282,11 @@ body [data-testid="stDialog"] [data-testid="stFormSubmitButton"] button{
   font-weight:850!important;
   min-height:34px!important;
   font-size:.8rem!important;
-  box-shadow:0 3px 10px rgba(124,58,237,.35)!important;
+  box-shadow:0 3px 10px rgba(124,58,237,.25)!important;
 }
 body [data-testid="stDialog"] [data-testid="stForm"]{
-  background:#140f26!important;
-  border:1px solid #3b2d5e!important;
+  background:#f8f6fe!important;
+  border:1px solid #ddd6fe!important;
   border-radius:14px!important;
   margin:3px 0!important;
   padding:2px 4px!important;
@@ -1293,29 +1294,29 @@ body [data-testid="stDialog"] [data-testid="stForm"]{
 body [data-testid="stDialog"] input{
   background:transparent!important;
   border:0!important;
-  color:#ffffff!important;
+  color:#1e1b4b!important;
   font-size:.81rem!important;
 }
 body [data-testid="stDialog"] input::placeholder{
-  color:#94a3b8!important;
+  color:#8b5cf6!important;
 }
 
 /* Custom scrollbar inside chat dialog container */
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"]{
-  border:1px solid #2d214d!important;
+  border:1px solid #e9d5ff!important;
   border-radius:13px!important;
-  background:#140f26!important;
+  background:#faf8ff!important;
   padding:3px 5px!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] > div{
   scrollbar-width:thin!important;
-  scrollbar-color:#8b5cf6 #140f26!important;
+  scrollbar-color:#8b5cf6 #faf8ff!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar{
   width:4px!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar-track{
-  background:#140f26!important;
+  background:#faf8ff!important;
   border-radius:99px!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar-thumb{
