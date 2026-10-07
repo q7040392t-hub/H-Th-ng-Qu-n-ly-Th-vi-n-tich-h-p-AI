@@ -1107,18 +1107,21 @@ section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[kind="primary"] *,
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid="stBaseButton-primary"] *{color:#354761!important;}
 
-/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET (LUXURY PURPLE THEME V3) ===== */
+/* ===== FLOATING CORNER CHATBOT WIDGET (INTERCOM / CRISP STYLE) ===== */
 body [data-testid="stDialog"]{
-  background:rgba(0,0,0,.4)!important;
+  background:transparent!important;
+  pointer-events:none!important;
+  z-index:999999!important;
 }
 body [data-testid="stDialog"] div[role="dialog"]{
-  width:min(340px,calc(100vw - 24px))!important;
-  max-width:340px!important;
-  max-height:500px!important;
-  height:500px!important;
+  pointer-events:auto!important;
+  width:min(320px,calc(100vw - 32px))!important;
+  max-width:320px!important;
+  max-height:430px!important;
+  height:430px!important;
   position:fixed!important;
-  right:20px!important;
-  bottom:20px!important;
+  right:24px!important;
+  bottom:80px!important;
   left:auto!important;
   top:auto!important;
   transform:none!important;
@@ -1126,16 +1129,17 @@ body [data-testid="stDialog"] div[role="dialog"]{
   background:linear-gradient(180deg,#18132b 0%,#110d20 100%)!important;
   color:#f3e8ff!important;
   border:1px solid #3c2a5c!important;
-  border-radius:20px!important;
-  box-shadow:0 20px 60px rgba(10,6,22,.85),0 0 25px rgba(139,92,246,.3)!important;
-  padding:0 14px 12px!important;
+  border-radius:18px!important;
+  box-shadow:0 14px 40px rgba(10,6,22,.65),0 0 25px rgba(139,92,246,.25)!important;
+  padding:0 12px 10px!important;
   overflow:hidden!important;
+  z-index:999999!important;
 }
 body [data-testid="stDialog"] [data-testid="stDialogHeader"]{
   background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;
-  padding:10px 14px!important;
-  margin:-1rem -1rem 10px -1rem!important;
-  border-radius:19px 19px 0 0!important;
+  padding:9px 12px!important;
+  margin:-1rem -1rem 8px -1rem!important;
+  border-radius:17px 17px 0 0!important;
   display:flex!important;
   align-items:center!important;
   justify-content:space-between!important;
@@ -1145,7 +1149,7 @@ body [data-testid="stDialog"] [data-testid="stDialogHeader"] h2,
 body [data-testid="stDialog"] [data-testid="stDialogHeader"] span,
 body [data-testid="stDialog"] [data-testid="stDialogHeader"] p{
   color:#ffffff!important;
-  font-size:.95rem!important;
+  font-size:.92rem!important;
   font-weight:900!important;
 }
 body [data-testid="stDialog"] [data-testid="stDialogHeader"] button,
@@ -1154,9 +1158,9 @@ body [data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="
   background:rgba(255,255,255,.2)!important;
   border:0!important;
   border-radius:50%!important;
-  width:26px!important;
-  height:26px!important;
-  min-height:26px!important;
+  width:24px!important;
+  height:24px!important;
+  min-height:24px!important;
   padding:0!important;
   display:inline-flex!important;
   align-items:center!important;
@@ -1176,20 +1180,20 @@ body [data-testid="stDialog"] caption{
 }
 
 .waka-bot-avatar{
-  width:28px!important;
-  height:28px!important;
+  width:24px!important;
+  height:24px!important;
   border-radius:50%!important;
   background:rgba(255,255,255,.25)!important;
   display:inline-flex!important;
   align-items:center!important;
   justify-content:center!important;
-  font-size:1rem!important;
+  font-size:.9rem!important;
 }
 .waka-status-badge{
-  font-size:.65rem!important;
+  font-size:.62rem!important;
   background:rgba(0,0,0,.3)!important;
   color:#f5d0fe!important;
-  padding:2px 7px!important;
+  padding:2px 6px!important;
   border-radius:99px!important;
   font-weight:700!important;
   border:1px solid rgba(255,255,255,.2)!important;
@@ -1198,54 +1202,54 @@ body [data-testid="stDialog"] caption{
   background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(217,70,239,.25))!important;
   border:1px solid rgba(168,85,247,.4)!important;
   color:#e9d5ff!important;
-  font-size:.8rem!important;
+  font-size:.78rem!important;
   font-weight:700!important;
-  padding:8px 12px!important;
-  border-radius:14px!important;
-  margin:6px 2px 8px!important;
+  padding:6px 10px!important;
+  border-radius:12px!important;
+  margin:4px 2px 6px!important;
   text-align:center!important;
   box-shadow:0 3px 10px rgba(139,92,246,.15)!important;
 }
 .waka-msg-user{
-  margin:5px 2px 5px auto!important;
-  max-width:85%!important;
-  padding:8px 12px!important;
-  border-radius:16px 16px 4px 16px!important;
+  margin:4px 2px 4px auto!important;
+  max-width:86%!important;
+  padding:7px 11px!important;
+  border-radius:14px 14px 3px 14px!important;
   background:linear-gradient(135deg,#7c3aed,#a855f7 60%,#ec4899)!important;
   color:#ffffff!important;
-  font-size:.82rem!important;
-  line-height:1.4!important;
-  box-shadow:0 3px 10px rgba(124,58,237,.35)!important;
+  font-size:.8rem!important;
+  line-height:1.38!important;
+  box-shadow:0 3px 9px rgba(124,58,237,.35)!important;
   word-break:break-word!important;
 }
 .waka-msg-ai-wrap{
   display:flex!important;
   align-items:flex-start!important;
   gap:6px!important;
-  margin:6px 2px!important;
+  margin:5px 2px!important;
 }
 .waka-ai-avatar{
-  width:28px!important;
-  height:28px!important;
-  flex:0 0 28px!important;
+  width:26px!important;
+  height:26px!important;
+  flex:0 0 26px!important;
   border-radius:50%!important;
   background:linear-gradient(135deg,#2e1065,#3b0764)!important;
-  border:2px solid #a855f7!important;
+  border:1.5px solid #a855f7!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  font-size:1rem!important;
-  box-shadow:0 2px 8px rgba(168,85,247,.3)!important;
+  font-size:.9rem!important;
+  box-shadow:0 2px 6px rgba(168,85,247,.3)!important;
 }
 .waka-msg-ai-box{
   background:#1f1838!important;
   border:1px solid #3b2d5e!important;
   color:#f3e8ff!important;
-  border-radius:14px!important;
-  padding:8px 12px!important;
-  font-size:.82rem!important;
-  line-height:1.45!important;
-  box-shadow:0 3px 10px rgba(0,0,0,.35)!important;
+  border-radius:13px!important;
+  padding:7px 11px!important;
+  font-size:.8rem!important;
+  line-height:1.4!important;
+  box-shadow:0 3px 9px rgba(0,0,0,.35)!important;
   flex:1!important;
 }
 .waka-msg-ai-box *{
@@ -1256,13 +1260,13 @@ body [data-testid="stDialog"] [data-testid="stButton"] button{
   background:#1f1838!important;
   border:1px solid #3b2d5e!important;
   color:#c084fc!important;
-  border-radius:11px!important;
-  font-size:.76rem!important;
+  border-radius:10px!important;
+  font-size:.74rem!important;
   font-weight:750!important;
-  min-height:34px!important;
-  padding:5px 10px!important;
+  min-height:30px!important;
+  padding:4px 8px!important;
   margin:1px 0!important;
-  box-shadow:0 2px 6px rgba(0,0,0,.2)!important;
+  box-shadow:0 2px 5px rgba(0,0,0,.2)!important;
 }
 body [data-testid="stDialog"] [data-testid="stButton"] button:hover{
   background:#2e2150!important;
@@ -1273,24 +1277,24 @@ body [data-testid="stDialog"] [data-testid="stFormSubmitButton"] button{
   background:linear-gradient(135deg,#7c3aed,#d946ef)!important;
   border:0!important;
   color:#ffffff!important;
-  border-radius:12px!important;
+  border-radius:11px!important;
   font-weight:850!important;
-  min-height:36px!important;
-  font-size:.82rem!important;
-  box-shadow:0 4px 12px rgba(124,58,237,.35)!important;
+  min-height:34px!important;
+  font-size:.8rem!important;
+  box-shadow:0 3px 10px rgba(124,58,237,.35)!important;
 }
 body [data-testid="stDialog"] [data-testid="stForm"]{
   background:#140f26!important;
   border:1px solid #3b2d5e!important;
-  border-radius:16px!important;
-  margin:4px 0!important;
-  padding:3px 5px!important;
+  border-radius:14px!important;
+  margin:3px 0!important;
+  padding:2px 4px!important;
 }
 body [data-testid="stDialog"] input{
   background:transparent!important;
   border:0!important;
   color:#ffffff!important;
-  font-size:.83rem!important;
+  font-size:.81rem!important;
 }
 body [data-testid="stDialog"] input::placeholder{
   color:#94a3b8!important;
@@ -1299,16 +1303,16 @@ body [data-testid="stDialog"] input::placeholder{
 /* Custom scrollbar inside chat dialog container */
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"]{
   border:1px solid #2d214d!important;
-  border-radius:14px!important;
+  border-radius:13px!important;
   background:#140f26!important;
-  padding:4px 6px!important;
+  padding:3px 5px!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] > div{
   scrollbar-width:thin!important;
   scrollbar-color:#8b5cf6 #140f26!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar{
-  width:5px!important;
+  width:4px!important;
 }
 body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar-track{
   background:#140f26!important;
@@ -2086,7 +2090,7 @@ def public_chat_dialog():
                     st.rerun(scope='fragment')
 
     # Dedicated scrollable history box for reviewing previous questions
-    chat_scroll_box = st.container(height=240, border=True)
+    chat_scroll_box = st.container(height=210, border=True)
     with chat_scroll_box:
         for m in st.session_state.public_chat_messages:
             if m['role']=='user':
