@@ -2078,8 +2078,10 @@ def public_chat_dialog():
                     st.session_state.public_chat_messages.append({'role':'user','content':prompt})
                     st.rerun(scope='fragment')
 
-    if len(st.session_state.public_chat_messages)>1:
-        for m in st.session_state.public_chat_messages[-6:]:
+    # Dedicated scrollable history box for reviewing previous questions
+    chat_scroll_box = st.container(height=265, border=False)
+    with chat_scroll_box:
+        for m in st.session_state.public_chat_messages:
             if m['role']=='user':
                 st.markdown(f'<div class="waka-msg-user">{html.escape(m["content"])}</div>',unsafe_allow_html=True)
             else:
@@ -2090,9 +2092,10 @@ def public_chat_dialog():
     if st.session_state.public_chat_messages and st.session_state.public_chat_messages[-1]['role']=='user':
         last_user_q=st.session_state.public_chat_messages[-1]['content']
         rag=ai.retrieve(last_user_q)
-        st.markdown('<div class="waka-msg-ai-wrap"><div class="waka-ai-avatar">🤖</div><div class="waka-msg-ai-box">',unsafe_allow_html=True)
-        answer=st.write_stream(ai.answer_stream(last_user_q,st.session_state.public_chat_messages[:-1],rag=rag))
-        st.markdown('</div></div>',unsafe_allow_html=True)
+        with chat_scroll_box:
+            st.markdown('<div class="waka-msg-ai-wrap"><div class="waka-ai-avatar">🤖</div><div class="waka-msg-ai-box">',unsafe_allow_html=True)
+            answer=st.write_stream(ai.answer_stream(last_user_q,st.session_state.public_chat_messages[:-1],rag=rag))
+            st.markdown('</div></div>',unsafe_allow_html=True)
         st.session_state.public_chat_messages.append({'role':'assistant','content':answer})
         st.rerun(scope='fragment')
 
