@@ -1107,16 +1107,15 @@ section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[kind="primary"] *,
 section[data-testid="stSidebar"] .st-key-sidebar_bottom_fixed button[data-testid="stBaseButton-primary"] *{color:#354761!important;}
 
-/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET (LUXURY PURPLE THEME V2) ===== */
-div[data-testid="stDialog"]{
-  background:rgba(0,0,0,.35)!important;
+/* ===== WAKA-STYLE COMPACT CHATBOT WIDGET (LUXURY PURPLE THEME V3) ===== */
+body [data-testid="stDialog"]{
+  background:rgba(0,0,0,.4)!important;
 }
-div[role="dialog"],
-div[data-testid="stDialog"] div[role="dialog"]{
-  width:min(350px,calc(100vw - 24px))!important;
-  max-width:350px!important;
-  max-height:510px!important;
-  height:510px!important;
+body [data-testid="stDialog"] div[role="dialog"]{
+  width:min(340px,calc(100vw - 24px))!important;
+  max-width:340px!important;
+  max-height:500px!important;
+  height:500px!important;
   position:fixed!important;
   right:20px!important;
   bottom:20px!important;
@@ -1132,7 +1131,7 @@ div[data-testid="stDialog"] div[role="dialog"]{
   padding:0 14px 12px!important;
   overflow:hidden!important;
 }
-div[data-testid="stDialog"] [data-testid="stDialogHeader"]{
+body [data-testid="stDialog"] [data-testid="stDialogHeader"]{
   background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;
   padding:10px 14px!important;
   margin:-1rem -1rem 10px -1rem!important;
@@ -1142,16 +1141,17 @@ div[data-testid="stDialog"] [data-testid="stDialogHeader"]{
   justify-content:space-between!important;
   box-shadow:0 4px 15px rgba(139,92,246,.35)!important;
 }
-div[data-testid="stDialog"] [data-testid="stDialogHeader"] h2,
-div[data-testid="stDialog"] [data-testid="stDialogHeader"] span{
+body [data-testid="stDialog"] [data-testid="stDialogHeader"] h2,
+body [data-testid="stDialog"] [data-testid="stDialogHeader"] span,
+body [data-testid="stDialog"] [data-testid="stDialogHeader"] p{
   color:#ffffff!important;
   font-size:.95rem!important;
   font-weight:900!important;
 }
-div[data-testid="stDialog"] [data-testid="stDialogHeader"] button,
-div[data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="Close"]{
+body [data-testid="stDialog"] [data-testid="stDialogHeader"] button,
+body [data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="Close"]{
   color:#ffffff!important;
-  background:rgba(255,255,255,.15)!important;
+  background:rgba(255,255,255,.2)!important;
   border:0!important;
   border-radius:50%!important;
   width:26px!important;
@@ -1162,36 +1162,19 @@ div[data-testid="stDialog"] [data-testid="stDialogHeader"] button[aria-label="Cl
   align-items:center!important;
   justify-content:center!important;
 }
-div[data-testid="stDialog"] [data-testid="stDialogHeader"] button:hover{
-  background:rgba(255,255,255,.3)!important;
+body [data-testid="stDialog"] [data-testid="stDialogHeader"] button:hover{
+  background:rgba(255,255,255,.35)!important;
   color:#ffffff!important;
 }
 
-div[role="dialog"] [data-testid="stMarkdownContainer"] p,
-div[role="dialog"] [data-testid="stMarkdownContainer"] li,
-div[role="dialog"] [data-testid="stMarkdownContainer"] span,
-div[role="dialog"] label,
-div[role="dialog"] caption{
+body [data-testid="stDialog"] [data-testid="stMarkdownContainer"] p,
+body [data-testid="stDialog"] [data-testid="stMarkdownContainer"] li,
+body [data-testid="stDialog"] [data-testid="stMarkdownContainer"] span,
+body [data-testid="stDialog"] label,
+body [data-testid="stDialog"] caption{
   color:#f3e8ff!important;
 }
 
-.waka-head-bar{
-  background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#d946ef 100%)!important;
-  padding:10px 14px!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  color:#ffffff!important;
-  font-size:.92rem!important;
-  font-weight:800!important;
-  box-shadow:0 4px 20px rgba(139,92,246,.35)!important;
-  margin:-1rem -1rem 10px -1rem!important;
-}
-.waka-head-title{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-}
 .waka-bot-avatar{
   width:28px!important;
   height:28px!important;
@@ -1268,33 +1251,8 @@ div[role="dialog"] caption{
 .waka-msg-ai-box *{
   color:#f3e8ff!important;
 }
-div[role="dialog"] [data-testid="stForm"]{
-  background:#140f26!important;
-  border:1px solid #3b2d5e!important;
-  border-radius:16px!important;
-  margin:4px 0!important;
-  padding:3px 5px!important;
-}
-div[role="dialog"] input{
-  background:transparent!important;
-  border:0!important;
-  color:#ffffff!important;
-  font-size:.83rem!important;
-}
-div[role="dialog"] input::placeholder{
-  color:#94a3b8!important;
-}
-div[role="dialog"] [data-testid="stFormSubmitButton"] button{
-  background:linear-gradient(135deg,#7c3aed,#d946ef)!important;
-  border:0!important;
-  color:#ffffff!important;
-  border-radius:12px!important;
-  font-weight:800!important;
-  min-height:34px!important;
-  font-size:.82rem!important;
-  box-shadow:0 4px 12px rgba(124,58,237,.35)!important;
-}
-div[role="dialog"] [data-testid="stButton"] button{
+
+body [data-testid="stDialog"] [data-testid="stButton"] button{
   background:#1f1838!important;
   border:1px solid #3b2d5e!important;
   color:#c084fc!important;
@@ -1304,11 +1262,61 @@ div[role="dialog"] [data-testid="stButton"] button{
   min-height:34px!important;
   padding:5px 10px!important;
   margin:1px 0!important;
+  box-shadow:0 2px 6px rgba(0,0,0,.2)!important;
 }
-div[role="dialog"] [data-testid="stButton"] button:hover{
+body [data-testid="stDialog"] [data-testid="stButton"] button:hover{
   background:#2e2150!important;
-  color:#f3e8ff!important;
+  color:#ffffff!important;
   border-color:#a855f7!important;
+}
+body [data-testid="stDialog"] [data-testid="stFormSubmitButton"] button{
+  background:linear-gradient(135deg,#7c3aed,#d946ef)!important;
+  border:0!important;
+  color:#ffffff!important;
+  border-radius:12px!important;
+  font-weight:850!important;
+  min-height:36px!important;
+  font-size:.82rem!important;
+  box-shadow:0 4px 12px rgba(124,58,237,.35)!important;
+}
+body [data-testid="stDialog"] [data-testid="stForm"]{
+  background:#140f26!important;
+  border:1px solid #3b2d5e!important;
+  border-radius:16px!important;
+  margin:4px 0!important;
+  padding:3px 5px!important;
+}
+body [data-testid="stDialog"] input{
+  background:transparent!important;
+  border:0!important;
+  color:#ffffff!important;
+  font-size:.83rem!important;
+}
+body [data-testid="stDialog"] input::placeholder{
+  color:#94a3b8!important;
+}
+
+/* Custom scrollbar inside chat dialog container */
+body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"]{
+  border:1px solid #2d214d!important;
+  border-radius:14px!important;
+  background:#140f26!important;
+  padding:4px 6px!important;
+}
+body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] > div{
+  scrollbar-width:thin!important;
+  scrollbar-color:#8b5cf6 #140f26!important;
+}
+body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar{
+  width:5px!important;
+}
+body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar-track{
+  background:#140f26!important;
+  border-radius:99px!important;
+}
+body [data-testid="stDialog"] [data-testid="stVerticalBlockBorderWrapper"] ::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#8b5cf6,#d946ef)!important;
+  border-radius:99px!important;
 }
 
 /* ===== DARK THEME GLOBAL OVERRIDES ===== */
@@ -2057,14 +2065,13 @@ def public_ai():
 def public_chat_dialog():
     ai=get_ai_service()
     ai_state='🟢 Gemini AI' if ai.enabled else '🟡 Local RAG'
-    st.markdown(
-        f'<div class="waka-head-bar">'
-        f'<div class="waka-head-title"><span class="waka-bot-avatar">🤖</span> <b>Trợ lý ảo LIBRA</b> <span class="waka-status-badge">{ai_state}</span></div>'
-        f'</div>',
-        unsafe_allow_html=True
-    )
+    
     if len(st.session_state.public_chat_messages)<=1:
-        st.markdown('<div class="waka-suggest-prompt">Bạn có muốn LIBRA gợi ý sách theo sở thích không?</div>',unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="waka-suggest-prompt">Bạn có muốn LIBRA gợi ý sách theo sở thích không? '
+            f'<span class="waka-status-badge">{ai_state}</span></div>',
+            unsafe_allow_html=True
+        )
         suggestions=[
             '📖 Gợi ý sách theo sở thích',
             '🔥 Sách mượn nhiều nhất',
@@ -2079,7 +2086,7 @@ def public_chat_dialog():
                     st.rerun(scope='fragment')
 
     # Dedicated scrollable history box for reviewing previous questions
-    chat_scroll_box = st.container(height=265, border=False)
+    chat_scroll_box = st.container(height=240, border=True)
     with chat_scroll_box:
         for m in st.session_state.public_chat_messages:
             if m['role']=='user':
@@ -2109,7 +2116,7 @@ def public_chat_dialog():
     c1,c2=st.columns(2)
     with c1:
         if st.button('🔄 Xóa hội thoại',key='clear_public_chat',use_container_width=True):
-            st.session_state.public_chat_messages=[{'role':'assistant','content':'Xin chào! Bạn muốn tìm sách hay hỏi điều gì?'}]
+            st.session_state.public_chat_messages=[{'role':'assistant','content':'Xin chào! Mình là Trợ lý AI LIBRA. Bạn muốn tìm sách, hỏi quy định thư viện hay hỏi kiến thức gì?'}]
             st.rerun(scope='fragment')
     with c2:
         if st.button('✕ Đóng',key='close_public_chat',use_container_width=True):
